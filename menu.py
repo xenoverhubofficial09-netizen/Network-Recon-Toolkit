@@ -17,16 +17,15 @@ def start():
 
     while True:
 
-        print("\n" + Fore.CYAN + "=" * 70)
+        print("\n" + Fore.CYAN + "=" * 60)
 
-        fig = Figlet(font="big")
+        fig = Figlet(font="standard")
 
-        print(Fore.GREEN + fig.renderText("NETWORK"))
-        print(Fore.GREEN + fig.renderText("RECON"))
+        print(Fore.GREEN + fig.renderText("NETWORK    RECON"))
         print(Fore.GREEN + fig.renderText("TOOLKIT"))
         print(Fore.YELLOW + fig.renderText("BY XENOVER !"))
 
-        print(Fore.CYAN + "=" * 70)
+        print(Fore.CYAN + "=" * 60)
 
         print(Fore.WHITE + """
 [1] Domain → IP
