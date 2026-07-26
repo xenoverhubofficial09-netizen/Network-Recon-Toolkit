@@ -1,3 +1,6 @@
+from colorama import Fore, Style, init
+from pyfiglet import Figlet
+
 from handlers.ip_handler import domain_to_ip, ip_to_domain
 from handlers.dns_handler import dns_records
 from handlers.whois_handler import whois_lookup
@@ -7,25 +10,40 @@ from handlers.port_scanner_handler import port_scanner
 from handlers.ip_info_handler import ip_information
 
 
+init(autoreset=True)
+
+
 def start():
 
     while True:
 
-        print("\n" + "=" * 50)
-        print("           NETWORK RECON TOOLKIT")
-        print("=" * 50)
+        print("\n" + Fore.CYAN + "=" * 70)
 
-        print("1. Domain → IP")
-        print("2. IP → Domain")
-        print("3. DNS Records")
-        print("4. WHOIS Lookup")
-        print("5. Ping Tool")
-        print("6. Host Information")
-        print("7. Port Scanner")
-        print("8. IP Information")
-        print("9. Exit")
+        fig = Figlet(font="big")
 
-        choice = input("\nSelect Option: ").strip()
+        print(Fore.GREEN + fig.renderText("NETWORK"))
+        print(Fore.GREEN + fig.renderText("RECON"))
+        print(Fore.GREEN + fig.renderText("TOOLKIT"))
+        print(Fore.YELLOW + fig.renderText("BY XENOVER !"))
+
+        print(Fore.CYAN + "=" * 70)
+
+        print(Fore.WHITE + """
+[1] Domain → IP
+[2] IP → Domain
+[3] DNS Records
+[4] WHOIS Lookup
+[5] Ping Tool
+[6] Host Information
+[7] Port Scanner
+[8] IP Information
+[9] Exit
+""")
+
+        choice = input(
+            Fore.CYAN + "Select Option: " + Style.RESET_ALL
+        ).strip()
+
 
         match choice:
 
@@ -54,8 +72,8 @@ def start():
                 ip_information()
 
             case "9":
-                print("\nGoodbye!")
+                print(Fore.RED + "\nGoodbye!")
                 break
 
             case _:
-                print("\n[ERROR] Invalid option.")
+                print(Fore.RED + "\n[ERROR] Invalid option.")

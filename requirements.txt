@@ -1,3 +1,8 @@
 requests
 dnspython
 python-whois
+colorama
+pyfiglet
+requests
+dnspython
+python-whois
