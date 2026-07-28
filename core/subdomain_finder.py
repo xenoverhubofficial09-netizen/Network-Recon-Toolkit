@@ -1,58 +1,60 @@
 import socket
 import time
-from concurrent.futures import ThreadPoolExecutor
-
-
-WORDLIST = "utils/wordlists/subdomains.txt"
-
-
-def check_subdomain(subdomain):
-
-    try:
-
-        ip = socket.gethostbyname(subdomain)
-
-        return (subdomain, ip)
-
-    except Exception:
-
-        return None
+import requests
 
 
 def find_subdomains(domain):
 
     start = time.time()
 
-    with open(WORDLIST, "r", encoding="utf-8") as file:
+    url = f"https://crt.sh/?q=%.{domain}&output=json"
 
-        words = [
-            line.strip()
-            for line in file
-            if line.strip()
-        ]
+    headers = {
+        "User-Agent": "NetworkReconToolkit/1.0"
+    }
 
-    targets = [
-        f"{word}.{domain}"
-        for word in words
-    ]
+    response = requests.get(
+        url,
+        headers=headers,
+        timeout=10
+    )
+
+    if response.status_code != 200:
+        raise Exception("crt.sh request failed.")
+
+    try:
+        data = response.json()
+    except Exception:
+        raise Exception("Unable to parse crt.sh response.")
+
+    found = set()
+
+    for item in data:
+
+        value = item.get("name_value", "")
+
+        for sub in value.split("\n"):
+
+            sub = sub.strip().lower()
+
+            if "*" in sub:
+                continue
+
+            if sub.endswith(domain):
+                found.add(sub)
 
     results = []
 
-    with ThreadPoolExecutor(max_workers=200) as executor:
+    for subdomain in sorted(found):
 
-        futures = [
-            executor.submit(check_subdomain, target)
-            for target in targets
-        ]
+        try:
 
-        for future in futures:
+            ip = socket.gethostbyname(subdomain)
 
-            result = future.result()
+            results.append((subdomain, ip))
 
-            if result:
-                results.append(result)
-
-    results.sort()
+        except Exception:
+            pass
 
     scan_time = round(time.time() - start, 2)
 

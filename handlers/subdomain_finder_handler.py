@@ -1,3 +1,5 @@
+from colorama import Fore
+
 from core.subdomain_finder import find_subdomains
 
 
@@ -9,29 +11,30 @@ def subdomain_finder():
 
         results, scan_time = find_subdomains(domain)
 
-        print("\n" + "=" * 65)
+        print("\n" + "=" * 70)
         print("                 SUBDOMAIN FINDER")
-        print("=" * 65)
+        print("=" * 70)
 
         print(f"Target : {domain}")
 
-        print("\nSUBDOMAIN                           IP")
-        print("-" * 65)
+        print("\nSUBDOMAIN                                       IP")
+        print("-" * 70)
 
         if results:
 
             for subdomain, ip in results:
 
-                print(f"{subdomain:<35} {ip}")
+                print(f"{subdomain:<48} {ip}")
 
         else:
 
-            print("No subdomains found.")
+            print(Fore.RED + "No subdomains found.")
 
-        print("\n" + "-" * 65)
+        print("-" * 70)
         print(f"Found     : {len(results)}")
         print(f"Scan Time : {scan_time} sec")
+        print("=" * 70)
 
     except Exception as e:
 
-        print(f"\n[ERROR] {e}")
+        print(Fore.RED + f"\n[ERROR] {e}")
